@@ -1,4 +1,4 @@
-#include<stdio.h>
+﻿#include<stdio.h>
 #include<windows.h>
 #include<conio.h>
 #include<string.h>
@@ -58,7 +58,7 @@ void information() {
 	getchar();
 	state = MENU;
 }
-void setting() {
+void setting() {	// mục tuỳ chỉnh
 	system("cls");
 	gotoxy(0, 9);
 	printf("an cac phim up down tren ban phim de tang giam toc do, nhan enter de tro ve menu");
@@ -69,7 +69,7 @@ void setting() {
 		if (_kbhit()) {
 			key = _getch();
 			switch (key) {
-				//nut trai
+				// nút trái
 			case 75:
 				if (speed > 1) {
 
@@ -78,7 +78,7 @@ void setting() {
 					printf("toc do hien tai : %d   ", speed);
 				}
 				break;
-				//nut phai
+				// nút phải
 			case  77:
 				if (speed < 100) {
 
@@ -87,7 +87,7 @@ void setting() {
 					printf("toc do hien tai : %d   ", speed);
 				}
 				break;
-			case 13:
+			case 13: // nút enter
 				state = MENU;
 				break;
 			}
@@ -100,26 +100,26 @@ void vekhung() {
 	int i = 0;
 	int j = 0;
 	SetColor(3);
-	for (i; i < 79; i++) {
+	for (i; i < 79; i++) {	// Viền trên, 79 là chiều dài khung
 		printf("-");
 	}
 	printf("\n");
 	i = 0;
-	for (i; i < 23; i++) {
+	for (i; i < 23; i++) {	// 23 là số dòng, chiều cao của khung
 
-		for (j; j < 79; j++) {
-			if (j == 0)printf("-");
-			else if (j == 78) printf("-\n");
-			else printf(" ");
+		for (j; j < 79; j++) {	// căn chỉnh chiều dài của của khung để đánh dấu chiều cao
+			if (j == 0)printf("#");	// Viền trái
+			else if (j == 78) printf("#\n");	// Viền phải
+			else printf(" "); // Chỉ ghi kí tự # ở vị trí 0 và 78, các vị trí trống là vùng nằm trong hộp để rắn chạy
 		}
 		j = 0;
 	}
 	i = 0;
-	for (i; i < 79; i++) {
+	for (i; i < 79; i++) { // Viền dưới
 		printf("-");
 	}
 }
-// Thong bao khi tro choi ket thuc
+// Thông báo khi trò chơi kết thúc
 void gameover() {
 	SetColor(4);
 	system("cls");
@@ -294,7 +294,7 @@ void drawscore() {
 }
 void addscore() {
 	SetColor(14);
-	gotoxy(79, 9);
+	gotoxy(79, 9); //(cột, dòng)
 	printf("%d", (score % 100000) / 10000);
 	gotoxy(79, 10);
 	printf("%d", (score % 10000) / 1000);
@@ -329,30 +329,30 @@ void ingame() {
 		if (_kbhit()) {
 			key = _getch();
 			switch (key) {
-				//nut len
+				// nút lên
 			case 72:
-				if (vy == 0) {
+				if (vy == 0) { // đi lên theo chiều cao
 					vx = 0;
 					vy = -1;
 				}
 				break;
-				//nut xuong
+				// nút xuống
 			case 80:
-				if (vy == 0) {
+				if (vy == 0) { // đi xuống theo chiều cao
 					vx = 0;
 					vy = 1;
 				}
 				break;
-				//nut trai
+				// nút trái
 			case 75:
-				if (vx == 0) {
+				if (vx == 0) { // đi qua trái
 					vy = 0;
 					vx = -1;
 				}
 				break;
-				// nut phai
+				// nút phải
 			case 77:
-				if (vx == 0) {
+				if (vx == 0) { // đi qua phải
 					vy = 0;
 					vx = 1;
 				}
@@ -372,7 +372,7 @@ void ingame() {
 			}
 			SetColor(2);
 			gotoxy(getx(character[0]), gety(character[0]));
-			printf("o");
+			printf("o"); // hình dạng thân rắn
 			character[0] += vx * 100;
 			character[0] += vy;
 			if (character[0] == fruit) {
@@ -382,7 +382,7 @@ void ingame() {
 				creatfruit();
 				SetColor(13);
 				gotoxy(getx(fruit), gety(fruit));
-				printf("O");
+				printf("O"); // hình dạng thức ăn
 			}
 			if ((vx > 0) && (getx(character[0]) == 78)) {
 				character[0] -= 7700;
@@ -396,9 +396,9 @@ void ingame() {
 			if ((vy < 0) && (gety(character[0]) == 0)) {
 				character[0] += 23;
 			}
-			SetColor(12);
+			SetColor(12); // màu đỏ
 			gotoxy(getx(character[0]), gety(character[0]));
-			printf("#");
+			printf("+"); // hình dạng đầu rắn
 			i = 1;
 			for (i; i < length; i++) {
 				if (character[i] == character[0]) {
