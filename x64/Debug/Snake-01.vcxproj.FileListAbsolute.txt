@@ -1,2 +1,4 @@
 C:\Users\Hito\Desktop\VS Snake 1\Snake-01\x64\Debug\Snake-01.exe
 C:\Users\Hito\Desktop\VS Snake 1\Snake-01\x64\Debug\Snake-01.pdb
+C:\Users\OrFox\Desktop\Snake-C-\x64\Debug\Snake-01.exe
+C:\Users\OrFox\Desktop\Snake-C-\x64\Debug\Snake-01.pdb

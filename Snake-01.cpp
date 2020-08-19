@@ -5,66 +5,74 @@
 #include<time.h>
 
 
-int character[1000];
-int length = 2;
-int fruit;
-int score;
-clock_t t;
+int character[1000];	// Chiều dài tối đa của rắn
+int length = 2;	
+int fruit;				// Thức ăn của rắn
+int score;				// Điểm của người chơi
+clock_t t;				// 
 int s_e;
-int vx;
-int vy;
-int speed = 10;
+int vx;					// Trục X
+int vy;					// Trục Y
+int speed = 10;			// Tốc độ di chuyển của rắn
 
-enum state {
-	MENU = 0, INGAME, SETTING, GUIDING, INFORMATION, GAMEOVER
-} state;
+enum state { // trạng thái các thành phần trong game
+	MENU = 0, INGAME, SETTING, GUIDING, INFORMATION, GAMEOVER, EXIT
+	// danh sách các hàm trong trò chơi
+	// menu: bảng danh sách lúc vào giao diện
+	// ingame: hàm xử lí các sự kiện trong game
+	// setting: hàm cài đặt
+	// guiding: hàm chưa có chức năng
+	// information: mục thông tin về demo
+	// gameover: hàm xử lí khi kết thúc trò chơi
+	// exit: thoát trò chơi
+} state; // trả về state
 
 int Random(int a, int b)
 {
-	return a + rand() % (b - a + 1);
+	return a + rand() % (b - a + 1);	//
 }
 
-void gotoxy(int x, int y)
+void gotoxy(int x, int y)	// Di chuyển con trỏ đến vị trí trong màn hình
 {
 	static HANDLE  h = NULL;
 	if (!h)
 		h = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD c = { x,y };
-	SetConsoleCursorPosition(h, c);
+	SetConsoleCursorPosition(h, c);	// cột dọc: h, hàng ngang: c
 }
-void SetColor(WORD color)
+void SetColor(WORD color)	// Màu kí tự khi hiển thị
 {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO screen_buffer_info;
 	GetConsoleScreenBufferInfo(hConsoleOutput, &screen_buffer_info);
 	WORD wAttributes = screen_buffer_info.wAttributes;
-	color &= 0x000f;
+	color &= 0x000f;	// mã màu
 	wAttributes &= 0xfff0; wAttributes |= color;
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
-void information() {
+void information() {	// mục thông tin game
 	system("cls");
-	SetColor(4);
-	gotoxy(10, 8);
-	printf("DEMO RAN SAN MOI");
-	gotoxy(8, 9);
-	printf("Thanh vien nhom");
-	gotoxy(3, 10);
-	printf("MSSV");
-	gotoxy(27, 11);
-	SetColor(14);
-	printf("Testing");
-	getchar();
-	state = MENU;
+	SetColor(4);	// màu kí tự
+	gotoxy(10, 8);	// vị trí của dòng 1
+	printf("DEMO RAN SAN MOI"); // dòng 1
+	gotoxy(8, 9);	// vị trí của dòng 2
+	printf("Thanh vien nhom"); // dòng 2
+	gotoxy(3, 10);	// vị trí của dòng 3
+	printf("MSSV");	// dòng 3
+	gotoxy(27, 11); // vị trí của dòng 4
+	SetColor(14);	
+	printf("Testing");	// dòng 4
+	getchar();		// nhận kí tự từ bàn phím khi chọn các chức năng
+	state = MENU;	// hiển thị menu chọn chức năng
 }
 void setting() {	// mục tuỳ chỉnh
-	system("cls");
-	gotoxy(0, 9);
+	system("cls");	// làm mới màn hình
+	gotoxy(0, 9);	// vị trí text sát viền trái màn hình
 	printf("an cac phim up down tren ban phim de tang giam toc do, nhan enter de tro ve menu");
-	gotoxy(30, 11);
-	printf("toc do hien tai : %d", speed);
-	int key;
+	gotoxy(30, 11);	// vị trí mục điều chỉnh tốc độ rắn
+	printf("toc do hien tai : %d", speed); // mục điều chỉnh tốc độ rắn
+	int key;		// biến nhận phản hồi từ bàn phím
 	while (state == SETTING) {
 		if (_kbhit()) {
 			key = _getch();
@@ -73,7 +81,7 @@ void setting() {	// mục tuỳ chỉnh
 			case 75:
 				if (speed > 1) {
 
-					speed -= 1;
+					speed -= 1; // Giảm tốc độ 1 đon vị
 					gotoxy(30, 11);
 					printf("toc do hien tai : %d   ", speed);
 				}
@@ -82,7 +90,7 @@ void setting() {	// mục tuỳ chỉnh
 			case  77:
 				if (speed < 100) {
 
-					speed += 1;
+					speed += 1; // tăng tốc độ lên 1 đơn vị
 					gotoxy(30, 11);
 					printf("toc do hien tai : %d   ", speed);
 				}
@@ -97,9 +105,9 @@ void setting() {	// mục tuỳ chỉnh
 
 // Ve khung vien cho game
 void vekhung() {
-	int i = 0;
-	int j = 0;
-	SetColor(3);
+	int i = 0;	// chiều ngang
+	int j = 0;	// chiều cao
+	SetColor(3); // màu kí tự
 	for (i; i < 79; i++) {	// Viền trên, 79 là chiều dài khung
 		printf("-");
 	}
@@ -121,8 +129,8 @@ void vekhung() {
 }
 // Thông báo khi trò chơi kết thúc
 void gameover() {
-	SetColor(4);
-	system("cls");
+	SetColor(4); // màu kí tự
+	system("cls");	// làm mới màn hình
 	gotoxy(30, 9);
 	printf("....Game over....");
 	gotoxy(15, 11);
@@ -132,6 +140,12 @@ void gameover() {
 	state = MENU;
 }
 
+// Exit 
+/*
+void exitGame() {
+	state = EXIT;
+	exit(0);
+}*/
 
 void menu() {
 	SetColor(14);
@@ -140,15 +154,18 @@ void menu() {
 	printf("DEMO RAN SAN MOI");
 	gotoxy(30, 5);
 	SetColor(4);
-	printf("1. vao game");
+	printf("1. vao game"); // 5
 	gotoxy(30, 6);
-	printf("2. tuy chinh");
+	printf("2. tuy chinh");// 6
 	gotoxy(30, 7);
-	printf("3. thong tin");
-	int choice = 1;
-	int oldChoice = 1;
-	int next = 1;
-	int key;
+	printf("3. thong tin");// 7
+/*	gotoxy(30, 8);
+	printf("4. exit");	*/   // 8
+
+	int choice = 1; // lựa chọn hiện tại
+	int oldChoice = 1; // lựa chọn cũ
+	int next = 1;	// lựa chọn tiếp theo
+	int key;		// kí tự được nhập từ bàn phím
 	SetColor(14);
 	gotoxy(29, 5);
 	printf("%c", 16);
@@ -206,6 +223,22 @@ void menu() {
 					oldChoice = 3;
 				}
 				break;
+/*			case 4:
+				if (oldChoice != choice) {
+
+
+					gotoxy(29, 6);
+					printf(" ");
+					gotoxy(29, 7);
+					printf(" ");
+					oldChoice = 4;
+
+					gotoxy(29, 8);
+					SetColor(14);
+					printf("%c", 16);
+
+				}
+				break;*/
 			}
 			if (key == 13) {
 				switch (choice) {
@@ -218,6 +251,9 @@ void menu() {
 				case 3:
 					state = INFORMATION;
 					break;
+				/*case 4:
+					state = EXIT;
+					break;*/
 
 				}
 			}
