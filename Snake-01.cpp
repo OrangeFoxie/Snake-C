@@ -269,10 +269,10 @@ void initgame() {
 	system("cls");
 	s_e = 120 - speed;
 	t = 0;
-	vx = 1;
-	vy = 0;
-	score = 0;
-	length = 10;
+	vx = 1;	// vị trí bắt đầu của rắn theo chiều dọc
+	vy = 0; // Vị trí bắt đầu của rắn theo chiều ngang
+	score = 0; // Điểm của người chơi
+	length = 2;	// Chiều dài cơ bản của rắn lúc bắt đầu trò chơi
 	character[0] = 11510;
 	character[1] = 11410;
 	character[2] = 11310;
@@ -317,7 +317,7 @@ void drawscore() {
 	gotoxy(79, 7);
 	printf("e");
 
-	gotoxy(79, 9);
+	/*gotoxy(79, 9);
 	printf("0");
 	gotoxy(79, 10);
 	printf("0");
@@ -326,11 +326,22 @@ void drawscore() {
 	gotoxy(79, 12);
 	printf("0");
 	gotoxy(79, 13);
+	printf("0");*/
+
+	gotoxy(79, 9);
+	printf("0");
+	gotoxy(80, 9);
+	printf("0");
+	gotoxy(81, 9);
+	printf("0");
+	gotoxy(82, 9);
+	printf("0");
+	gotoxy(83, 9);
 	printf("0");
 }
 void addscore() {
 	SetColor(14);
-	gotoxy(79, 9); //(cột, dòng)
+	/*gotoxy(79, 9); //(cột, dòng)
 	printf("%d", (score % 100000) / 10000);
 	gotoxy(79, 10);
 	printf("%d", (score % 10000) / 1000);
@@ -339,6 +350,17 @@ void addscore() {
 	gotoxy(79, 12);
 	printf("%d", (score % 100) / 10);
 	gotoxy(79, 13);
+	printf("%d", score % 10);*/
+
+	gotoxy(79, 9); //(cột, dòng)
+	printf("%d", (score % 100000) / 10000);
+	gotoxy(80, 9);
+	printf("%d", (score % 10000) / 1000);
+	gotoxy(81, 9);
+	printf("%d", (score % 1000) / 100);
+	gotoxy(82, 9);
+	printf("%d", (score % 100) / 10);
+	gotoxy(83, 9);
 	printf("%d", score % 10);
 }
 void ingame() {
