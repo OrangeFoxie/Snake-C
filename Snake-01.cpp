@@ -79,18 +79,30 @@ void setting() {	// mục tuỳ chỉnh
 			switch (key) {
 				// nút trái
 			case 75:
-				if (speed > 1) {
+				if (speed > 0) {
 
 					speed -= 1; // Giảm tốc độ 1 đon vị
+					gotoxy(30, 11);
+					printf("toc do hien tai : %d   ", speed);
+				}
+				if (speed == 0) { // giảm xuống dưới 1 thì về 100
+
+					speed = 100; // Giảm tốc độ 1 đon vị
 					gotoxy(30, 11);
 					printf("toc do hien tai : %d   ", speed);
 				}
 				break;
 				// nút phải
 			case  77:
-				if (speed < 100) {
+				if (speed < 101) {	
 
 					speed += 1; // tăng tốc độ lên 1 đơn vị
+					gotoxy(30, 11);
+					printf("toc do hien tai : %d   ", speed);
+				}
+				if (speed == 101){	// tăng đến 100 thì quay về 1
+
+					speed = 1;
 					gotoxy(30, 11);
 					printf("toc do hien tai : %d   ", speed);
 				}
@@ -180,7 +192,7 @@ void menu() {
 				choice--;
 				if (choice == 0) choice = 3;
 			}
-			switch (choice) {
+			switch (choice) {	// cập nhật - hiển thị vị trí con trỏ chọn chức năng
 			case 1:
 				if (oldChoice != choice) {
 
@@ -242,13 +254,13 @@ void menu() {
 			}
 			if (key == 13) {
 				switch (choice) {
-				case 1:
+				case 1:	// chọn chức năng vào game
 					state = INGAME;
 					break;
-				case 2:
+				case 2:	// chọn chức năng tuỳ chỉnh
 					state = SETTING;
 					break;
-				case 3:
+				case 3:	// chọn chức năng thông tin game
 					state = INFORMATION;
 					break;
 				/*case 4:
@@ -276,36 +288,37 @@ void initgame() {
 	character[0] = 11510;
 	character[1] = 11410;
 	character[2] = 11310;
-	character[3] = 11210;
+	character[3] = 11210;	// Vị trí các phần của rắn lúc bắt đầu
 	character[4] = 11110;
 	character[5] = 11010;
 	character[6] = 10910;
 	character[7] = 10810;
 	character[8] = 10710;
-	character[9] = 10610;
-	fruit = 15010;
+	character[9] = 10610;	
+	fruit = 15010;			// vị trí đồ ăn lúc bắt đầu game
 }
-void creatfruit() {
+void creatfruit() {	// hàm tạo đồ ăn
 	int notok = 1;
 	while (notok) {
 		notok = 0;
-		fruit = 10000 + Random(1, 77) * 100 + Random(1, 23);
+		fruit = 10000 + Random(1, 77) * 100 + Random(1, 23);	// Vị trí random khi tạo đồ ăn
 		int i = 0;
 		for (i; i < length; i++) {
-			if (character[i] == fruit) {
-				notok = 1;
+			if (character[i] == fruit) {	// cộng dồn đồ ăn vào thân rắn cho dài ra
+				notok = 1;	// trả về điều kiện bắt đầu vòng lặp while
 			}
 		}
 	}
 }
 int getx(int a) {
-	return (a - 10000) / 100;
+	return (a - 10000) / 100;	// vị trí theo chiều ngang
 }
-int gety(int a) {
+int gety(int a) {	// vị trí theo chiều dọc
 	return a % 100;
 }
-void drawscore() {
+void drawscore() {	// hiển thị bảng điểm -- bên phải hộp rắn
 
+	// Chữ "score"
 	gotoxy(79, 3);
 	printf("s");
 	gotoxy(79, 4);
@@ -316,6 +329,19 @@ void drawscore() {
 	printf("r");
 	gotoxy(79, 7);
 	printf("e");
+
+	// hàng điểm số
+	gotoxy(79, 9);
+	printf("0");
+	gotoxy(80, 9);
+	printf("0");
+	gotoxy(81, 9);
+	printf("0");
+	gotoxy(82, 9);
+	printf("0");
+	gotoxy(83, 9);
+	printf("0");
+
 
 	/*gotoxy(79, 9);
 	printf("0");
@@ -328,19 +354,22 @@ void drawscore() {
 	gotoxy(79, 13);
 	printf("0");*/
 
-	gotoxy(79, 9);
-	printf("0");
-	gotoxy(80, 9);
-	printf("0");
-	gotoxy(81, 9);
-	printf("0");
-	gotoxy(82, 9);
-	printf("0");
-	gotoxy(83, 9);
-	printf("0");
+
 }
-void addscore() {
+void addscore() {	// Hàm cộng điểm khi rắn ăn mồi
 	SetColor(14);
+	gotoxy(79, 9); //(cột, dòng)
+	printf("%d", (score % 100000) / 10000);
+	gotoxy(80, 9);
+	printf("%d", (score % 10000) / 1000);
+	gotoxy(81, 9);
+	printf("%d", (score % 1000) / 100);
+	gotoxy(82, 9);
+	printf("%d", (score % 100) / 10);
+	gotoxy(83, 9);
+	printf("%d", score % 10);
+
+
 	/*gotoxy(79, 9); //(cột, dòng)
 	printf("%d", (score % 100000) / 10000);
 	gotoxy(79, 10);
@@ -352,31 +381,22 @@ void addscore() {
 	gotoxy(79, 13);
 	printf("%d", score % 10);*/
 
-	gotoxy(79, 9); //(cột, dòng)
-	printf("%d", (score % 100000) / 10000);
-	gotoxy(80, 9);
-	printf("%d", (score % 10000) / 1000);
-	gotoxy(81, 9);
-	printf("%d", (score % 1000) / 100);
-	gotoxy(82, 9);
-	printf("%d", (score % 100) / 10);
-	gotoxy(83, 9);
-	printf("%d", score % 10);
+
 }
-void ingame() {
+void ingame() {	// hàm xử lí sự kiện trong game
 	int key;
 	int i;
-	initgame();
-	vekhung();
+	initgame();	// khởi chạy game
+	vekhung();	// tạo hộp nhốt rắn
 
-	drawscore();
+	drawscore();	// tạo bảng điểm
 	state = INGAME;
 	SetColor(13);
-	gotoxy(getx(fruit), gety(fruit));
-	printf("0");
+	gotoxy(getx(fruit), gety(fruit));	// tạo đồ ăn
+	printf("3");	// hiển thị đồ ăn lần đầu bên trong hộp rắn nơi rắn bò
 	SetColor(12);
-	gotoxy(getx(character[0]), gety(character[0]));
-	printf("#");
+	gotoxy(getx(character[0]), gety(character[0]));	// cập nhật di chuyển của rắn
+	printf("#");	
 	i = 1;
 	SetColor(2);
 	for (i; i < length; i++) {
@@ -422,25 +442,25 @@ void ingame() {
 		if ((clock() - t) >= s_e) {
 			if (character[length - 1] != 0) {
 				gotoxy(getx(character[length - 1]), gety(character[length - 1]));
-				printf(" ");
+				printf(" ");	// Những chỗ rắn bò qua rồi thì sẽ quay lại thành khoảng trống
 			}
 			i = length - 1;
 			for (i; i > 0; i--) {
-				character[i] = character[i - 1];
+				character[i] = character[i - 1];	// xoá phần thân cũ khi rắn bò qua
 			}
 			SetColor(2);
-			gotoxy(getx(character[0]), gety(character[0]));
-			printf("o"); // hình dạng thân rắn
-			character[0] += vx * 100;
-			character[0] += vy;
-			if (character[0] == fruit) {
-				length += 1;
-				score += (speed / 10 + 5);
-				addscore();
-				creatfruit();
-				SetColor(13);
-				gotoxy(getx(fruit), gety(fruit));
-				printf("O"); // hình dạng thức ăn
+			gotoxy(getx(character[0]), gety(character[0]));	// vị trí thân rắn
+			printf("0"); // hình dạng thân rắn
+			character[0] += vx * 100; // cập nhật bước di chuyển của rắn theo chiều ngang
+			character[0] += vy;		  // cập nhật bước di chuyển của rắn theo chiều dọc
+			if (character[0] == fruit) {	// đầu rắn mà chạm mồi thì...
+				length += 1;				// chiều dài tăng 1
+				score += (speed / 10 + 5);	// điểm tăng = tốc độ /10 + 5
+				addscore();					// cập nhật điểm lên bảng điểm
+				creatfruit();				// tạo đồ ăn mới
+				SetColor(13);				
+				gotoxy(getx(fruit), gety(fruit));	// cập nhật vị trí đồ ăn
+				printf("0"); // hiển thị hình dạng thức ăn lần 2 về sau
 			}
 			if ((vx > 0) && (getx(character[0]) == 78)) {
 				character[0] -= 7700;
@@ -455,40 +475,40 @@ void ingame() {
 				character[0] += 23;
 			}
 			SetColor(12); // màu đỏ
-			gotoxy(getx(character[0]), gety(character[0]));
+			gotoxy(getx(character[0]), gety(character[0]));	// cập nhật vị trí đầu rắn
 			printf("+"); // hình dạng đầu rắn
 			i = 1;
 			for (i; i < length; i++) {
-				if (character[i] == character[0]) {
-					system("cls");
-					state = GAMEOVER;
+				if (character[i] == character[0]) {	// Nếu rắn lỡ cắn trúng bản thân thì...
+					system("cls");	// cập nhật màn hình
+					state = GAMEOVER;	// hiển thị màn hình GAME OVER
 				}
 			}
-			t = clock();
+			t = clock();	// cập nhật timing trong game
 		}
 
 	}
 }
 
 int main() {
-	state = MENU;
-	menu();
+	state = MENU;	// lúc khởi động vào game thì màn hình đăng nhập xuất hiện
+	menu();			// hiện màn hình menu chọn chức năng
 
-	while (1) {
-		switch (state) {
-		case MENU:
+	while (1) {		// while để duy trì chức năng 
+		switch (state) {	// state = phím chọn chức năng
+		case MENU:		// vào menu chức năng
 			menu();
 			break;
-		case INGAME:
+		case INGAME:	// vào game
 			ingame();
 			break;
-		case GAMEOVER:
+		case GAMEOVER:	// game kết thúc
 			gameover();
 			break;
-		case INFORMATION:
+		case INFORMATION:	// thông tin game
 			information();
 			break;
-		case  SETTING:
+		case  SETTING:	// tuỳ chỉnh
 			setting();
 			break;
 		}
