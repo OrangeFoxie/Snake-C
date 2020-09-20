@@ -393,7 +393,7 @@ void ingame() {	// hàm xử lí sự kiện trong game
 	state = INGAME;
 	SetColor(13);
 	gotoxy(getx(fruit), gety(fruit));	// tạo đồ ăn
-	printf("3");	// hiển thị đồ ăn lần đầu bên trong hộp rắn nơi rắn bò
+	printf("0");	// hiển thị đồ ăn lần đầu bên trong hộp rắn nơi rắn bò
 	SetColor(12);
 	gotoxy(getx(character[0]), gety(character[0]));	// cập nhật di chuyển của rắn
 	printf("#");	
